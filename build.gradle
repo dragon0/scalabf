@@ -10,6 +10,7 @@
 apply plugin: 'scala'
 apply plugin: 'application'
 mainClassName = 'io.github.dragon0.scalabf.App'
+version = 'alpha'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -38,7 +39,12 @@ jar {
     }
 
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Implementation-Title': 'Foobar',
+                'Implementation-Version': version,
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Main-Class': mainClassName
     }
 }
 
