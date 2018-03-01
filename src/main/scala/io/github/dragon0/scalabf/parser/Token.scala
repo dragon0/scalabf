@@ -11,3 +11,5 @@ case object Minus extends Token
 case object Dot extends Token
 case object Comma extends Token
 
+case class UnrecognizedToken(c: Char, location: Int)
+

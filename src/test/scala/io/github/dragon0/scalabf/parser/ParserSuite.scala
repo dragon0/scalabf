@@ -70,5 +70,46 @@ class LibrarySuite extends FunSuite {
     }
   }
 
+  test("parser interprets unrecognized =") {
+    def parser = new Parser()
+    parser.tokenize('=') match {
+        case None => succeed
+        case _ => fail
+    }
+  }
+
+  test("parser interprets string <<") {
+    def parser = new Parser()
+    parser.tokenize("<<") match {
+        case Right(seq) => assert(seq === Array(LeftShift, LeftShift))
+        case _ => fail
+    }
+  }
+
+  test("parser interprets string <>[]+-.,") {
+    def parser = new Parser()
+    parser.tokenize("<>[]+-.,") match {
+        case Right(seq) => assert(seq === Array(
+                LeftShift,
+                RightShift,
+                LeftBracket,
+                RightBracket,
+                Plus,
+                Minus,
+                Dot,
+                Comma
+            ))
+        case _ => fail
+    }
+  }
+
+  test("parser interprets string <<<<<a>>>>>") {
+    def parser = new Parser()
+    parser.tokenize("<<<<<a>>>>>") match {
+        case Left(ut) => assert(ut === UnrecognizedToken('a', 6))
+        case _ => fail
+    }
+  }
+
 }
 

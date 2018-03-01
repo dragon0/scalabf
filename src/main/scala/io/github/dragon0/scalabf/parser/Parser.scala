@@ -1,4 +1,5 @@
 package io.github.dragon0.scalabf.parser
+import scala.annotation.tailrec
 
 class Parser {
     def tokenize(c: Char): Option[Token] = {
@@ -13,6 +14,20 @@ class Parser {
             case ',' => Some(Comma)
             case _ => None
         }
+    }
+
+    def tokenize(s: String): Either[UnrecognizedToken, Seq[Token]] = {
+        @tailrec
+        def rec(i: Int, seq: Seq[Token]): Either[UnrecognizedToken, Seq[Token]] = {
+            if(i >= s.length){
+                Right(seq)
+            }
+            else tokenize(s(i)) match {
+                case Some(tok) => {rec(i+1, seq :+ tok)}
+                case None => Left(UnrecognizedToken(s(i), i+1))
+            }
+        }
+        rec(0, Array[Token]())
     }
 }
 
