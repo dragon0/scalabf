@@ -1,7 +1,7 @@
 package io.github.dragon0.scalabf.parser
 import scala.annotation.tailrec
 
-class Parser {
+object Parser {
     def tokenize(c: Char): Option[Token] = {
         c match {
             case '<' => Some(LeftShift)

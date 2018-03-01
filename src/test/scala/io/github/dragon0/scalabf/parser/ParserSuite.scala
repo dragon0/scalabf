@@ -7,88 +7,77 @@ import org.scalatest.junit.JUnitRunner
 class LibrarySuite extends FunSuite {
 
   test("parser interprets <") {
-    def parser = new Parser()
-    parser.tokenize('<') match {
+    Parser.tokenize('<') match {
         case Some(LeftShift) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets >") {
-    def parser = new Parser()
-    parser.tokenize('>') match {
+    Parser.tokenize('>') match {
         case Some(RightShift) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets [") {
-    def parser = new Parser()
-    parser.tokenize('[') match {
+    Parser.tokenize('[') match {
         case Some(LeftBracket) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets ]") {
-    def parser = new Parser()
-    parser.tokenize(']') match {
+    Parser.tokenize(']') match {
         case Some(RightBracket) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets +") {
-    def parser = new Parser()
-    parser.tokenize('+') match {
+    Parser.tokenize('+') match {
         case Some(Plus) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets -") {
-    def parser = new Parser()
-    parser.tokenize('-') match {
+    Parser.tokenize('-') match {
         case Some(Minus) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets .") {
-    def parser = new Parser()
-    parser.tokenize('.') match {
+    Parser.tokenize('.') match {
         case Some(Dot) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets ,") {
-    def parser = new Parser()
-    parser.tokenize(',') match {
+    Parser.tokenize(',') match {
         case Some(Comma) => succeed
         case _ => fail
     }
   }
 
   test("parser interprets unrecognized =") {
-    def parser = new Parser()
-    parser.tokenize('=') match {
+    Parser.tokenize('=') match {
         case None => succeed
         case _ => fail
     }
   }
 
   test("parser interprets string <<") {
-    def parser = new Parser()
-    parser.tokenize("<<") match {
+    Parser.tokenize("<<") match {
         case Right(seq) => assert(seq === Array(LeftShift, LeftShift))
         case _ => fail
     }
   }
 
   test("parser interprets string <>[]+-.,") {
-    def parser = new Parser()
-    parser.tokenize("<>[]+-.,") match {
+    Parser.tokenize("<>[]+-.,") match {
         case Right(seq) => assert(seq === Array(
                 LeftShift,
                 RightShift,
@@ -104,16 +93,14 @@ class LibrarySuite extends FunSuite {
   }
 
   test("parser interprets string <<<<<a>>>>>") {
-    def parser = new Parser()
-    parser.tokenize("<<<<<a>>>>>") match {
+    Parser.tokenize("<<<<<a>>>>>") match {
         case Left(ut) => assert(ut === UnrecognizedToken('a', 6))
         case _ => fail
     }
   }
 
   test("parser ignores whitespace in string < <") {
-    def parser = new Parser()
-    parser.tokenize("< <") match {
+    Parser.tokenize("< <") match {
         case Right(seq) => assert(seq === Array(LeftShift, LeftShift))
         case _ => fail
     }
