@@ -22,9 +22,13 @@ class Parser {
             if(i >= s.length){
                 Right(seq)
             }
-            else tokenize(s(i)) match {
-                case Some(tok) => {rec(i+1, seq :+ tok)}
-                case None => Left(UnrecognizedToken(s(i), i+1))
+            else{
+                val c = s(i)
+                if(Character.isWhitespace(c)) rec(i+1, seq)
+                else tokenize(c) match {
+                    case Some(tok) => rec(i+1, seq :+ tok)
+                    case None => Left(UnrecognizedToken(c, i+1))
+                }
             }
         }
         rec(0, Array[Token]())

@@ -111,5 +111,13 @@ class LibrarySuite extends FunSuite {
     }
   }
 
+  test("parser ignores whitespace in string < <") {
+    def parser = new Parser()
+    parser.tokenize("< <") match {
+        case Right(seq) => assert(seq === Array(LeftShift, LeftShift))
+        case _ => fail
+    }
+  }
+
 }
 
