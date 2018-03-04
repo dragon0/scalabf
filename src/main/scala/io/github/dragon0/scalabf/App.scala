@@ -5,10 +5,11 @@ import java.util.Scanner
 object App {
     def main(args: Array[String]): Unit = {
         val in = new Scanner(System.in)
+        val parser = new Parser()
         print(": ")
         while(in.hasNext){
             val word = in.next
-            val tokens = Parser.tokenize(word)
+            val tokens = parser.tokenize(word)
             println(tokens)
             print(": ")
         }

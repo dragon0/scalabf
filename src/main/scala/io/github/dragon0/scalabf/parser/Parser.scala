@@ -1,13 +1,21 @@
 package io.github.dragon0.scalabf.parser
 import scala.annotation.tailrec
 
-object Parser {
+class Parser {
+    private var nesting = 0
     def tokenize(c: Char): Option[Token] = {
         c match {
             case '<' => Some(LeftShift)
             case '>' => Some(RightShift)
-            case '[' => Some(LeftBracket)
-            case ']' => Some(RightBracket)
+            case '[' => {
+                nesting = nesting + 1
+                Some(LeftBracket(nesting))
+            }
+            case ']' => {
+                val ret = Some(RightBracket(nesting))
+                nesting = nesting - 1
+                ret
+            }
             case '+' => Some(Plus)
             case '-' => Some(Minus)
             case '.' => Some(Dot)

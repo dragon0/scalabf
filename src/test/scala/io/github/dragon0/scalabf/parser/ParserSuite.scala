@@ -7,78 +7,78 @@ import org.scalatest.junit.JUnitRunner
 class LibrarySuite extends FunSuite {
 
     test("parser interprets <") {
-        Parser.tokenize('<') match {
+        new Parser().tokenize('<') match {
             case Some(LeftShift) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets >") {
-        Parser.tokenize('>') match {
+        new Parser().tokenize('>') match {
             case Some(RightShift) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets [") {
-        Parser.tokenize('[') match {
-            case Some(LeftBracket) => succeed
+        new Parser().tokenize('[') match {
+            case Some(LeftBracket(1)) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets ]") {
-        Parser.tokenize(']') match {
-            case Some(RightBracket) => succeed
+        new Parser().tokenize(']') match {
+            case Some(RightBracket(0)) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets +") {
-        Parser.tokenize('+') match {
+        new Parser().tokenize('+') match {
             case Some(Plus) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets -") {
-        Parser.tokenize('-') match {
+        new Parser().tokenize('-') match {
             case Some(Minus) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets .") {
-        Parser.tokenize('.') match {
+        new Parser().tokenize('.') match {
             case Some(Dot) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets ,") {
-        Parser.tokenize(',') match {
+        new Parser().tokenize(',') match {
             case Some(Comma) => succeed
             case _ => fail
         }
     }
 
     test("parser interprets unrecognized =") {
-        Parser.tokenize('=') match {
+        new Parser().tokenize('=') match {
             case None => succeed
             case _ => fail
         }
     }
 
     test("parser interprets string <<") {
-        assert(Parser.tokenize("<<") === Array(LeftShift, LeftShift))
+        assert(new Parser().tokenize("<<") === Array(LeftShift, LeftShift))
     }
 
     test("parser interprets string <>[]+-.,") {
-        assert(Parser.tokenize("<>[]+-.,") === Array(
+        assert(new Parser().tokenize("<>[]+-.,") === Array(
             LeftShift,
             RightShift,
-            LeftBracket,
-            RightBracket,
+            LeftBracket(1),
+            RightBracket(1),
             Plus,
             Minus,
             Dot,
@@ -87,7 +87,7 @@ class LibrarySuite extends FunSuite {
     }
 
     test("parser interprets string <<<<<a>>>>>") {
-        assert(Parser.tokenize("<<<<<a>>>>>") === Array(
+        assert(new Parser().tokenize("<<<<<a>>>>>") === Array(
             LeftShift,
             LeftShift,
             LeftShift,
@@ -102,7 +102,16 @@ class LibrarySuite extends FunSuite {
     }
 
     test("parser ignores whitespace in string < <") {
-        assert(Parser.tokenize("< <") === Array(LeftShift, LeftShift))
+        assert(new Parser().tokenize("< <") === Array(LeftShift, LeftShift))
+    }
+
+    test("parser recognizes nesting in [[]]") {
+        assert(new Parser().tokenize("[[]]") === Array(
+            LeftBracket(1),
+            LeftBracket(2),
+            RightBracket(2),
+            RightBracket(1)
+        ))
     }
 
 }
