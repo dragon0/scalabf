@@ -9,14 +9,7 @@ object App {
         while(in.hasNext){
             val word = in.next
             val tokens = Parser.tokenize(word)
-            tokens match {
-                case Left(ut) => {
-                    printf("Unrecognized character %c at position %d\n", ut.c, ut.location)
-                }
-                case Right(seq) => {
-                    println(seq)
-                }
-            }
+            println(tokens)
             print(": ")
         }
         println()

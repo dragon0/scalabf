@@ -16,19 +16,15 @@ object Parser {
         }
     }
 
-    def tokenize(s: String): Either[UnrecognizedToken, Seq[Token]] = {
+    def tokenize(s: String): Seq[Token] = {
         @tailrec
-        def rec(i: Int, seq: Seq[Token]): Either[UnrecognizedToken, Seq[Token]] = {
+        def rec(i: Int, seq: Seq[Token]): Seq[Token] = {
             if(i >= s.length){
-                Right(seq)
+                seq
             }
-            else{
-                val c = s(i)
-                if(Character.isWhitespace(c)) rec(i+1, seq)
-                else tokenize(c) match {
-                    case Some(tok) => rec(i+1, seq :+ tok)
-                    case None => Left(UnrecognizedToken(c, i+1))
-                }
+            else tokenize(s(i)) match {
+                case Some(tok) => rec(i+1, seq :+ tok)
+                case None => rec(i+1, seq)
             }
         }
         rec(0, Array[Token]())
