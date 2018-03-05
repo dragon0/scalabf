@@ -2,7 +2,7 @@ package io.github.dragon0.scalabf.machine
 import scala.annotation.tailrec
 
 class Program(val commands: Seq[Command]) {
-    require(commands.size != 0)
+    require(commands.nonEmpty)
     var currentCommand: Command = commands(0)
     var currentIndex = 0
 
